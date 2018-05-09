@@ -1,8 +1,8 @@
 # Extract text from a PDF with pdftothumb
 
-[![Software License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE.md)
+[![GitHub license](https://img.shields.io/github/license/ottosmops/pdftothumb.svg)](https://github.com/ottosmops/pdftothumb/blob/master/LICENSE.md)
 [![Latest Stable Version](https://poser.pugx.org/ottosmops/pdftothumb/v/stable?format=flat-square)](https://packagist.org/packages/ottosmops/pdftothumb)
-[![Build Status](https://img.shields.io/travis/ottosmops/pdftothumb/master.svg?style=flat-square)](https://travis-ci.org/ottomops/pdftothumb)
+[![Build Status](https://api.travis-ci.com/ottosmops/pdftothumb.svg?branch=master)]
 [![Packagist Downloads](https://img.shields.io/packagist/dt/ottosmops/pdftothumb.svg?style=flat-square)](https://packagist.org/packages/ottosmops/pdftothumb)
 
 This package provides a wrapper for `pdftoppm`. 
