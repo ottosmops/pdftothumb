@@ -1,0 +1,12 @@
+build:
+    dependencies:
+        before:
+            - sudo apt-get install -y poppler-utils
+
+filter:
+    excluded_paths:
+        - 'tests/*'
+checks:
+    php: true
+coding_style:
+    php: {  }
