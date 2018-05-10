@@ -30,8 +30,10 @@ composer require ottosmops/pdftothumb
 
 Converting PDF to jpg:
 ```php
-$exitCode = (new Converter($source))->convert();
+$exitCode = (new Converter($source, $target, $executable))->convert();
 ```
+
+```$target``` and ```$executable``` are optional.
 
 Or like this: 
 ```php
@@ -43,6 +45,7 @@ You can set some options:
 ```php
 Converter::create('/path/to/source.pdf')
                  ->target('/path/to/target.jpg')
+                 ->executable('path/to/pdftoppm')
                  ->format('jpeg') // jpeg | png | tiff
                  ->scaleTo(150)
                  ->page(1) // or ->firstpage(1)->lastpage(1)
