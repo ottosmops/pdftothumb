@@ -103,12 +103,12 @@ class Converter
     public function format(string $format)
     {
         $this->options['format'] = '-' . $this->normalizeFormat($format);
-        $this->setExtensionFromFormat($format);
+        $this->actualizeExtensionFromFormat($format);
 
         return $this;
     }
 
-    protected function setExtensionFromFormat(string $format)
+    protected function actualizeExtensionFromFormat()
     {
         $this->options['format'] == '-jpeg' && $this->extension('jpg');
         $this->options['format'] == '-tiff' && $this->extension('tif');
