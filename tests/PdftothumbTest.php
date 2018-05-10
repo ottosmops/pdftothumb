@@ -133,6 +133,8 @@ class PdftothumbTest extends TestCase
         $expected = 'docx';
         $actual = $converter->executable;
         $this->assertSame($expected, $actual);
+        $actual = $converter->command();
+        $this->assertStringStartsWith($expected, $actual);
     }
 
     /** @test */
