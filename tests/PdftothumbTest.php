@@ -27,7 +27,6 @@ class PdftothumbTest extends TestCase
 
     protected function tearDown()
     {
-        putenv('PATH=$PATH:/usr/local/bin/:/usr/bin/:/bin/');
         exec("rm -r ".__DIR__.'/testfiles/tmp');
     }
 

@@ -102,6 +102,21 @@ class Converter
 
     public function format(string $format)
     {
+        $this->options['format'] = '-' . $this->normalizeFormat($format);
+        $this->setExtensionFromFormat($format);
+
+        return $this;
+    }
+
+    protected function setExtensionFromFormat(string $format)
+    {
+        $this->options['format'] == '-jpeg' && $this->extension('jpg');
+        $this->options['format'] == '-tiff' && $this->extension('tif');
+        $this->options['format'] == '-png' && $this->extension('png');
+    }
+
+    protected function normalizeFormat(string $format)
+    {
         $format = strtolower($format);
         $format = $format == 'jpg' ? 'jpeg' : $format;
         $format = $format == 'tif' ? 'tiff' : $format;
@@ -111,20 +126,7 @@ class Converter
         if (!in_array($format, $formats)) {
             throw new FileFormatNotAllowed("fileformat not allowed {$format}");
         }
-
-        $this->options['format'] = '-' . $format;
-
-        if ($format == 'jpeg') {
-            $this->extension('jpg');
-        }
-        if ($format == 'tiff') {
-            $this->extension('tif');
-        }
-        if ($format == 'png') {
-            $this->extension('png');
-        }
-
-        return $this;
+        return $format;
     }
 
     protected function extension($extension = null)
