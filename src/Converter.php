@@ -32,7 +32,7 @@ class Converter
     ];
 
 
-    public function __construct(string $source = '', string $target = '', $executable = '')
+    public function __construct(string $source, string $target = '', $executable = '')
     {
         $this->executable = $executable ? $executable : 'pdftoppm';
         $this->format('jpeg');
@@ -52,7 +52,7 @@ class Converter
 
     }
 
-    public static function create(string $source = null, string $target = null, string $executable = null)
+    public static function create(string $source, string $target = '', string $executable = '')
     {
         return (new static($source, $target, $executable));
     }
