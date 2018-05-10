@@ -1,4 +1,4 @@
-# Extract text from a PDF with pdftothumb
+# Convert a PDF to an image with pdftoppm 
 
 [![GitHub license](https://img.shields.io/github/license/ottosmops/pdftothumb.svg)](https://github.com/ottosmops/pdftothumb/blob/master/LICENSE.md)
 [![Latest Stable Version](https://poser.pugx.org/ottosmops/pdftothumb/v/stable?format=flat-square)](https://packagist.org/packages/ottosmops/pdftothumb)
@@ -30,8 +30,10 @@ composer require ottosmops/pdftothumb
 
 Converting PDF to jpg:
 ```php
-$exitCode = (new Converter($source))->convert();
+$exitCode = (new Converter($source, $target, $executable))->convert();
 ```
+
+```$target``` and ```$executable``` are optional.
 
 Or like this: 
 ```php
@@ -43,6 +45,7 @@ You can set some options:
 ```php
 Converter::create('/path/to/source.pdf')
                  ->target('/path/to/target.jpg')
+                 ->executable('path/to/pdftoppm')
                  ->format('jpeg') // jpeg | png | tiff
                  ->scaleTo(150)
                  ->page(1) // or ->firstpage(1)->lastpage(1)
