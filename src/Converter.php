@@ -20,7 +20,7 @@ class Converter
 
     protected $target = '';
 
-
+    protected $extension = '';
 
     // cf https://www.systutorials.com/docs/linux/man/1-pdftoppm/
     public $exitCodes = [
@@ -32,7 +32,7 @@ class Converter
     ];
 
 
-    public function __construct(string $source = null, string $target = null, $executable = null)
+    public function __construct(string $source = '', string $target = '', $executable = '')
     {
         $this->executable = $executable ? $executable : 'pdftoppm';
         $this->format('jpeg');
@@ -44,8 +44,12 @@ class Converter
         if (!is_file($source)) {
             throw new FileNotFound("could not find pdf {$source}");
         }
+        if (!$target) {
+            $this->target = pathinfo($this->source, PATHINFO_DIRNAME).'/'.pathinfo($this->source, PATHINFO_FILENAME);
+        } else {
+            $this->target($target);
+        }
 
-        $this->target = pathinfo($this->source, PATHINFO_DIRNAME).'/'.pathinfo($this->source, PATHINFO_FILENAME);;
     }
 
     public static function create(string $source = null, string $target = null, string $executable = null)
