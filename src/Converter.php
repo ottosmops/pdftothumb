@@ -71,25 +71,25 @@ class Converter
 
     public function target(string $target = null)
     {
-        $this->target = pathinfo($target, PATHINFO_DIRNAME).'/'.pathinfo($target, PATHINFO_FILENAME);
+        $this->target = pathinfo($target, PATHINFO_DIRNAME) . '/' . pathinfo($target, PATHINFO_FILENAME);
         return $this;
     }
 
     public function scaleTo(int $scaleTo)
     {
-        $this->options['scale-to'] = '-scale-to '. (string) $scaleTo;
+        $this->options['scale-to'] = '-scale-to ' . (string) $scaleTo;
         return $this;
     }
 
     public function firstPage(int $firstPage)
     {
-        $this->options['firstPage'] = '-f '. (string) $firstPage;
+        $this->options['firstPage'] = '-f ' . (string) $firstPage;
         return $this;
     }
 
     public function lastPage(int $lastPage)
     {
-        $this->options['lastPage'] = '-l '. (string) $lastPage;
+        $this->options['lastPage'] = '-l ' . (string) $lastPage;
         return $this;
     }
 
@@ -141,7 +141,7 @@ class Converter
 
     public function setOptions(string $options)
     {
-        $this->options = [ $options ];
+        $this->options = [$options];
         return $this;
     }
 
