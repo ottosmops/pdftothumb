@@ -5,6 +5,13 @@ build:
     environment:
         php:
             version: 7.1
+    tests:
+        override:
+            -
+                command: 'vendor/bin/phpunit --coverage-clover=some-file'
+                coverage:
+                    file: 'some-file'
+                    format: 'clover'
 
 filter:
     excluded_paths:
@@ -13,10 +20,4 @@ checks:
     php: true
 coding_style:
     php: {  }
-tests:
-        override:
-            -
-                command: 'vendor/bin/phpunit --coverage-clover=some-file'
-                coverage:
-                    file: 'some-file'
-                    format: 'clover'
+
