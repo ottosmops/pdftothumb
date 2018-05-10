@@ -8,7 +8,8 @@
 This package provides a wrapper for `pdftoppm`. 
 
 ```php
-  \Ottosmops\Pdftothumb\Converter::create('/path/to/file.pdf')->convert(); //creates a thumb of the first page: '/path/to/file.jpg' 
+  \Ottosmops\Pdftothumb\Converter::create('/path/to/file.pdf')->convert(); 
+  //creates a thumb of the first page: '/path/to/file.jpg' 
 ```
 
 ## Requirements
