@@ -116,8 +116,7 @@ class PdftothumbTest extends TestCase
     {
         putenv('PATH=$PATH:/usr/local/bin/:/usr/bin');
         $target = $this->tmp_dir . 'correct.tif';
-        Converter::create($this->src_path . $this->correct_file)
-                            ->target($target)
+        Converter::create($this->src_path . $this->correct_file, $target)
                             ->format('tif')
                             ->convert();
         $actual = is_file($target);
