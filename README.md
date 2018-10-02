@@ -80,14 +80,14 @@ Tell the medialibrary not to use the standard ImageGenarator.
 config/medialibrary.php
 ```php
 /*
-	 * These generators will be used to created conversion of media files.
-	 */
-	'image_generators' => [
-		Spatie\MediaLibrary\ImageGenerators\FileTypes\Image::class ,
-		//Spatie\MediaLibrary\ImageGenerators\FileTypes\Pdf::class ,
-		Spatie\MediaLibrary\ImageGenerators\FileTypes\Svg::class ,
-		Spatie\MediaLibrary\ImageGenerators\FileTypes\Video::class ,
-	],
+* These generators will be used to created conversion of media files.
+*/
+'image_generators' => [
+	Spatie\MediaLibrary\ImageGenerators\FileTypes\Image::class ,
+	//Spatie\MediaLibrary\ImageGenerators\FileTypes\Pdf::class ,
+	Spatie\MediaLibrary\ImageGenerators\FileTypes\Svg::class ,
+	Spatie\MediaLibrary\ImageGenerators\FileTypes\Video::class ,
+],
 ```
 
 Create a new ImageGenerator 
