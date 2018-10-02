@@ -113,9 +113,7 @@ class Pdf extends BaseGenerator
     {
         $imageFile = pathinfo($path, PATHINFO_DIRNAME).'/'.pathinfo($path, PATHINFO_FILENAME).'.jpg';
 
-        $exitCode = Converter::create($path)
-                             ->target($imageFile)
-                             ->convert();
+        Converter::create($path)->target($imageFile)->convert();
 
         return $imageFile;
     }
