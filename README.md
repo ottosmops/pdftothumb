@@ -14,6 +14,8 @@ This package provides a wrapper for `pdftoppm`.
   //creates a thumb of the first page: '/path/to/file.jpg'
 ```
 
+We use this as an alternative to the excellent [spatie/pdf-to-image](https://github.com/spatie/pdf-to-image) package as we sometimes have large PDFs to convert and then it seems to be faster and more memory friendly to use pdftoppm. 
+
 ## Requirements
 
 The Package uses [pdftoppm](https://linux.die.net/man/1/pdftoppm). Make sure that this is installed: ```which pdftoppm```
@@ -70,6 +72,68 @@ Converter::create('/path/to/source.pdf')
 ```
 
 Default options are: ```-f 1 -l 1 -scale-to 150 -jpeg```
+
+## Usage for spatie/medialibrary
+
+Tell the medialibrary not to use the standard ImageGenarator.
+
+config/medialibrary.php
+```php
+/*
+* These generators will be used to created conversion of media files.
+*/
+'image_generators' => [
+	Spatie\MediaLibrary\ImageGenerators\FileTypes\Image::class ,
+	//Spatie\MediaLibrary\ImageGenerators\FileTypes\Pdf::class ,
+	Spatie\MediaLibrary\ImageGenerators\FileTypes\Svg::class ,
+	Spatie\MediaLibrary\ImageGenerators\FileTypes\Video::class ,
+],
+```
+
+Create a new ImageGenerator 
+
+app/ImageGenarators/Pdf.php
+
+```php
+<?php
+
+namespace App\ImageGenerators;
+
+use Illuminate\Support\Collection;
+use Spatie\MediaLibrary\Conversion\Conversion;
+use Spatie\MediaLibrary\ImageGenerators\BaseGenerator;
+use Ottosmops\Pdftothumb\Converter;
+
+class Pdf extends BaseGenerator
+{
+   /**
+    * This function should return a path to an image representation of the given file.
+    */
+    public function convert(string $path, Conversion $conversion = null) : string
+    {
+        $imageFile = pathinfo($path, PATHINFO_DIRNAME).'/'.pathinfo($path, PATHINFO_FILENAME).'.jpg';
+
+        Converter::create($path)->target($imageFile)->convert();
+
+        return $imageFile;
+    }
+
+    public function requirementsAreInstalled() : bool
+    {
+        return true;
+    }
+
+    public function supportedExtensions() : Collection
+    {
+        return collect(['pdf']);
+    }
+
+    public function supportedMimeTypes() : Collection
+    {
+        return collect('application/pdf');
+    }
+}
+```  
 
 ## License
 
