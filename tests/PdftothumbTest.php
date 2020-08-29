@@ -20,12 +20,12 @@ class PdftothumbTest extends TestCase
     protected $correct_file = 'correct.pdf';
 
 
-    protected function setUp()
+    protected function setUp() : void
     {
         is_dir($this->tmp_dir) || mkdir($this->tmp_dir, 0777);
     }
 
-    protected function tearDown()
+    protected function tearDown() : void
     {
         putenv('PATH=$PATH:/usr/local/bin/:/usr/bin/:/bin/');
         exec("rm -r ".__DIR__.'/testfiles/tmp');

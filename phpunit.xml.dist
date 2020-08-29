@@ -10,7 +10,7 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Ottosmops pdftothumb Test Suite">
+        <testsuite name="Ottosmops pdfvalidate Test Suite">
             <directory suffix="Test.php">tests</directory>
         </testsuite>
     </testsuites>

@@ -160,7 +160,7 @@ class Converter
      */
     public function convert()
     {
-        $process = new Process($this->command());
+        $process = Process::fromShellCommandline($this->command());
         $process->run();
 
         if (!$process->isSuccessful()) {

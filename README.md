@@ -1,4 +1,4 @@
-# Convert a PDF to an image with pdftoppm 
+# Convert a PDF to an image with pdftoppm
 
 [![GitHub license](https://img.shields.io/github/license/ottosmops/pdftothumb.svg)](https://github.com/ottosmops/pdftothumb/blob/master/LICENSE.md)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ottosmops/pdftothumb/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ottosmops/pdftothumb/?branch=master)
@@ -7,11 +7,11 @@
 [![Latest Stable Version](https://poser.pugx.org/ottosmops/pdftothumb/v/stable?format=flat-square)](https://packagist.org/packages/ottosmops/pdftothumb)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/ottosmops/pdftothumb.svg?style=flat-square)](https://packagist.org/packages/ottosmops/pdftothumb)
 
-This package provides a wrapper for `pdftoppm`. 
+This package provides a wrapper for `pdftoppm`.
 
 ```php
-  \Ottosmops\Pdftothumb\Converter::create('/path/to/file.pdf')->convert(); 
-  //creates a thumb of the first page: '/path/to/file.jpg' 
+  \Ottosmops\Pdftothumb\Converter::create('/path/to/file.pdf')->convert();
+  //creates a thumb of the first page: '/path/to/file.jpg'
 ```
 
 ## Requirements
@@ -38,7 +38,7 @@ $exitCode = (new Converter($source, $target, $executable))->convert();
 
 ```$target``` and ```$executable``` are optional.
 
-Or like this: 
+Or like this:
 ```php
 $converter = Converter::create($source);
 $converter->convert()
@@ -58,12 +58,12 @@ Converter::create('/path/to/source.pdf')
 You can add options:
 ```php
 Converter::create('/path/to/source.pdf')
-                ->addOption('-gray') 
+                ->addOption('-gray')
                 ->convert();
 ```
- 
+
 Or you can replace all options and set them by hand:
-```php 
+```php
 Converter::create('/path/to/source.pdf')
                 ->setOptions('-f 3 -l 3 -scale-to 200 -png')
                 ->convert();
@@ -74,4 +74,3 @@ Default options are: ```-f 1 -l 1 -scale-to 150 -jpeg```
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-

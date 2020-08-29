@@ -1,16 +1,15 @@
 build:
-    dependencies:
-        before:
-            - sudo apt-get install -y poppler-utils
     environment:
         php:
-            version: 7.1
+            version: 7.2
+            version: 7.3
+            version: 7.4
     tests:
         override:
             -
-                command: 'vendor/bin/phpunit --coverage-clover=some-file'
+                command: 'vendor/bin/phpunit --coverage-clover=clover.xml'
                 coverage:
-                    file: 'some-file'
+                    file: 'clover.xml'
                     format: 'clover'
 
 filter:
@@ -20,4 +19,3 @@ checks:
     php: true
 coding_style:
     php: {  }
-
