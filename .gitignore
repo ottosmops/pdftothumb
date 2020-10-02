@@ -1,4 +1,5 @@
 build/
 composer.lock
+*.cache
 docs
 vendor/
