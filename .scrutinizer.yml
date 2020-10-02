@@ -1,4 +1,7 @@
 build:
+    dependencies:
+        before:
+            - sudo apt-get install -y poppler-utils
     environment:
         php:
             version: 7.2
