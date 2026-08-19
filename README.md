@@ -1,9 +1,9 @@
 # Convert a PDF to an image with pdftoppm
 
 [![GitHub license](https://img.shields.io/github/license/ottosmops/pdftothumb.svg)](https://github.com/ottosmops/pdftothumb/blob/master/LICENSE.md)
+[![Tests](https://github.com/ottosmops/pdftothumb/actions/workflows/tests.yml/badge.svg)](https://github.com/ottosmops/pdftothumb/actions/workflows/tests.yml)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ottosmops/pdftothumb/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ottosmops/pdftothumb/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/ottosmops/pdftothumb/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ottosmops/pdftothumb/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/ottosmops/pdftothumb/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ottosmops/pdftothumb/build-status/master)
 [![Latest Stable Version](https://poser.pugx.org/ottosmops/pdftothumb/v/stable?format=flat-square)](https://packagist.org/packages/ottosmops/pdftothumb)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/ottosmops/pdftothumb.svg?style=flat-square)](https://packagist.org/packages/ottosmops/pdftothumb)
 
@@ -17,6 +17,9 @@ This package provides a wrapper for `pdftoppm`.
 We use this as an alternative to the excellent [spatie/pdf-to-image](https://github.com/spatie/pdf-to-image) package as we sometimes have large PDFs to convert and then it seems to be faster and more memory friendly to use pdftoppm. 
 
 ## Requirements
+
+- PHP >= 8.2
+- [poppler-utils](https://poppler.freedesktop.org/) (provides `pdftoppm`)
 
 The Package uses [pdftoppm](https://linux.die.net/man/1/pdftoppm). Make sure that this is installed: ```which pdftoppm```
 
@@ -75,24 +78,26 @@ Default options are: ```-f 1 -l 1 -scale-to 150 -jpeg```
 
 ## Usage for spatie/medialibrary
 
-Tell the medialibrary not to use the standard ImageGenarator.
+Tell the medialibrary not to use the standard ImageGenerator.
 
-config/medialibrary.php
+config/media-library.php
 ```php
 /*
-* These generators will be used to created conversion of media files.
-*/
+ * These generators will be used to create an image of a media file.
+ */
 'image_generators' => [
-	Spatie\MediaLibrary\ImageGenerators\FileTypes\Image::class ,
-	//Spatie\MediaLibrary\ImageGenerators\FileTypes\Pdf::class ,
-	Spatie\MediaLibrary\ImageGenerators\FileTypes\Svg::class ,
-	Spatie\MediaLibrary\ImageGenerators\FileTypes\Video::class ,
+    Spatie\MediaLibrary\Conversions\ImageGenerators\Image::class,
+    Spatie\MediaLibrary\Conversions\ImageGenerators\Webp::class,
+    // Spatie\MediaLibrary\Conversions\ImageGenerators\Pdf::class,
+    App\ImageGenerators\Pdf::class,
+    Spatie\MediaLibrary\Conversions\ImageGenerators\Svg::class,
+    Spatie\MediaLibrary\Conversions\ImageGenerators\Video::class,
 ],
 ```
 
-Create a new ImageGenerator 
+Create a new ImageGenerator
 
-app/ImageGenarators/Pdf.php
+app/ImageGenerators/Pdf.php
 
 ```php
 <?php
@@ -100,16 +105,16 @@ app/ImageGenarators/Pdf.php
 namespace App\ImageGenerators;
 
 use Illuminate\Support\Collection;
-use Spatie\MediaLibrary\Conversion\Conversion;
-use Spatie\MediaLibrary\ImageGenerators\BaseGenerator;
 use Ottosmops\Pdftothumb\Converter;
+use Spatie\MediaLibrary\Conversions\Conversion;
+use Spatie\MediaLibrary\Conversions\ImageGenerators\ImageGenerator;
 
-class Pdf extends BaseGenerator
+class Pdf extends ImageGenerator
 {
-   /**
-    * This function should return a path to an image representation of the given file.
-    */
-    public function convert(string $path, Conversion $conversion = null) : string
+    /**
+     * This function should return a path to an image representation of the given file.
+     */
+    public function convert(string $path, ?Conversion $conversion = null): string
     {
         $imageFile = pathinfo($path, PATHINFO_DIRNAME).'/'.pathinfo($path, PATHINFO_FILENAME).'.jpg';
 
@@ -118,22 +123,22 @@ class Pdf extends BaseGenerator
         return $imageFile;
     }
 
-    public function requirementsAreInstalled() : bool
+    public function requirementsAreInstalled(): bool
     {
         return true;
     }
 
-    public function supportedExtensions() : Collection
+    public function supportedExtensions(): Collection
     {
         return collect(['pdf']);
     }
 
-    public function supportedMimeTypes() : Collection
+    public function supportedMimeTypes(): Collection
     {
-        return collect('application/pdf');
+        return collect(['application/pdf']);
     }
 }
-```  
+```
 
 ## License
 

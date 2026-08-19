@@ -2,13 +2,13 @@
 
 namespace Ottosmops\Pdftothumb\Test;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use Ottosmops\Pdftothumb\Converter;
 
 use Ottosmops\Pdftothumb\Exceptions\CouldNotConvertPdf;
 use Ottosmops\Pdftothumb\Exceptions\FileNotFound;
-use Ottosmops\Pdftothumb\Exceptions\BinaryNotFound;
 use Ottosmops\Pdftothumb\Exceptions\FileFormatNotAllowed;
 
 class PdftothumbTest extends TestCase
@@ -19,34 +19,34 @@ class PdftothumbTest extends TestCase
 
     protected $correct_file = 'correct.pdf';
 
-
     protected function setUp() : void
     {
-        is_dir($this->tmp_dir) || mkdir($this->tmp_dir, 0777);
+        putenv('PATH='.getenv('PATH').':/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin');
+        is_dir($this->tmp_dir) || mkdir($this->tmp_dir, 0777, true);
     }
 
     protected function tearDown() : void
     {
-        putenv('PATH=$PATH:/usr/local/bin/:/usr/bin/:/bin/');
-        exec("rm -r ".__DIR__.'/testfiles/tmp');
+        if (is_dir($this->tmp_dir)) {
+            array_map('unlink', glob($this->tmp_dir.'*') ?: []);
+            rmdir($this->tmp_dir);
+        }
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_a_file()
     {
-        putenv('PATH=$PATH:/usr/local/bin/:/usr/bin');
-        $thumb = (new Converter($this->src_path . $this->correct_file))->convert();
+        (new Converter($this->src_path . $this->correct_file))->convert();
         $actual = is_file($this->src_path .'correct.jpg');
         $this->assertTrue($actual);
         $this->assertSame('image/jpeg', mime_content_type($this->src_path .'correct.jpg'));
         unlink($this->src_path .'correct.jpg');
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_a_tiff()
     {
-        putenv('PATH=$PATH:/usr/local/bin/:/usr/bin');
-        $thumb = Converter::create($this->src_path . $this->correct_file)
+        Converter::create($this->src_path . $this->correct_file)
                             ->format('tiff')
                             ->convert();
         $actual = is_file($this->src_path .'correct.tif');
@@ -55,10 +55,9 @@ class PdftothumbTest extends TestCase
         unlink($this->src_path .'correct.tif');
     }
 
-     /** @test */
+    #[Test]
     public function it_creates_a_png()
     {
-        putenv('PATH=$PATH:/usr/local/bin/:/usr/bin');
         Converter::create($this->src_path . $this->correct_file)
                             ->format('png')
                             ->convert();
@@ -68,10 +67,9 @@ class PdftothumbTest extends TestCase
         unlink($this->src_path .'correct.png');
     }
 
-    /** @test */
+    #[Test]
     public function the_image_has_the_right_dimention()
     {
-        putenv('PATH=$PATH:/usr/local/bin/:/usr/bin');
         Converter::create($this->src_path . $this->correct_file)
                             ->format('jpeg')
                             ->scaleTo(200)
@@ -82,10 +80,9 @@ class PdftothumbTest extends TestCase
         unlink($this->src_path .'correct.jpg');
     }
 
-    /** @test */
+    #[Test]
     public function we_can_set_all_options_by_hand()
     {
-        putenv('PATH=$PATH:/usr/local/bin/:/usr/bin');
         Converter::create($this->src_path . $this->correct_file)
                  ->target($this->src_path .'correct.jpg')
                  ->format('jpeg')
@@ -98,10 +95,9 @@ class PdftothumbTest extends TestCase
         unlink($this->src_path .'correct.jpg');
     }
 
-    /** @test */
+    #[Test]
     public function we_can_specify_a_target()
     {
-        putenv('PATH=$PATH:/usr/local/bin/:/usr/bin');
         $target = $this->tmp_dir .'correct.jpg';
         Converter::create($this->src_path . $this->correct_file)
                             ->target($target)
@@ -111,10 +107,9 @@ class PdftothumbTest extends TestCase
         $this->assertTrue($actual);
     }
 
-    /** @test */
+    #[Test]
     public function we_can_specify_a_format()
     {
-        putenv('PATH=$PATH:/usr/local/bin/:/usr/bin');
         $target = $this->tmp_dir . 'correct.tif';
         Converter::create($this->src_path . $this->correct_file, $target)
                             ->format('tif')
@@ -124,7 +119,7 @@ class PdftothumbTest extends TestCase
         $this->assertTrue($actual);
     }
 
-    /** @test */
+    #[Test]
     public function we_can_specify_a_executable()
     {
         $converter = Converter::create($this->src_path . $this->correct_file)
@@ -136,7 +131,7 @@ class PdftothumbTest extends TestCase
         $this->assertStringStartsWith($expected, $actual);
     }
 
-    /** @test */
+    #[Test]
     public function we_can_set_addional_options()
     {
         $converter = Converter::create($this->src_path . $this->correct_file)
@@ -146,17 +141,30 @@ class PdftothumbTest extends TestCase
         $this->assertStringStartsWith($expected, $actual);
     }
 
-    /** @test */
+    #[Test]
     public function we_can_set_commpletly_new_options()
     {
         $converter = Converter::create($this->src_path . $this->correct_file)
-                            ->setOptions('-tiff -f 2 -l 2 -scale-to 200', false);
+                            ->setOptions('-tiff -f 2 -l 2 -scale-to 200');
         $actual = $converter->command();
         $expected = 'pdftoppm -tiff -f 2 -l 2 -scale-to 200';
         $this->assertStringStartsWith($expected, $actual);
     }
 
-    /** @test */
+    #[Test]
+    public function it_handles_paths_with_spaces_and_quotes()
+    {
+        $source = $this->tmp_dir ."it's a file.pdf";
+        copy($this->src_path . $this->correct_file, $source);
+        $target = $this->tmp_dir ."it's a thumb.jpg";
+        Converter::create($source)
+                            ->target($target)
+                            ->convert();
+        $this->assertTrue(is_file($target));
+        $this->assertSame('image/jpeg', mime_content_type($target));
+    }
+
+    #[Test]
     public function it_will_throw_an_exception_when_the_file_format_is_not_allowed()
     {
         $this->expectException(FileFormatNotAllowed::class);
@@ -165,7 +173,7 @@ class PdftothumbTest extends TestCase
                             ->convert();
     }
 
-    /** @test */
+    #[Test]
     public function it_will_throw_an_exception_when_the_file_is_not_found()
     {
         $this->expectException(FileNotFound::class);
@@ -173,12 +181,11 @@ class PdftothumbTest extends TestCase
                             ->convert();
     }
 
-    /** @test */
+    #[Test]
     public function it_will_throw_an_exception_when_file_is_not_converted()
     {
         $this->expectException(CouldNotConvertPdf::class);
         Converter::create($this->src_path . 'corrupted-pdf.pdf')
                             ->convert();
     }
-
 }

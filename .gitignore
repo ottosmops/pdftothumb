@@ -1,5 +1,10 @@
 build/
 composer.lock
 *.cache
+.phpunit.cache/
 docs
 vendor/
+
+# Claude Code
+.claude/
+CLAUDE.md

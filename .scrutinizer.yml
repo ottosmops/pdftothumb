@@ -4,9 +4,7 @@ build:
             - sudo apt-get install -y poppler-utils
     environment:
         php:
-            version: 7.2
-            version: 7.3
-            version: 7.4
+            version: 8.3
     tests:
         override:
             -
